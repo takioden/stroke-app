@@ -10,5 +10,5 @@ This app provides a simple and interactive way to demonstrate how machine learni
 
 🙌 Acknowledgments
 
-Dataset source: Kaggle – Stroke Prediction Dataset
+Dataset source: Kaggle – Brain Stroke Dataset
 Built with ❤️ using Python, Streamlit, and Scikit-Learn.
