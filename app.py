@@ -27,7 +27,7 @@ with col2:
     bmi = st.number_input("BMI", min_value=0.0)
 
     work_type = st.selectbox("Work Type",
-        ["Private", "Self-employed", "children", "Govt_job"]
+        ["Private", "Self-employed", "Children", "Government job"]
     )
 
     residence = st.selectbox("Residence Type", ["Urban", "Rural"])
@@ -47,10 +47,10 @@ data = {
     "bmi": [bmi],
 
     # WORK TYPE
-    "work_type_Govt_job": [1 if work_type == "Govt_job" else 0],
+    "work_type_Govt_job": [1 if work_type == "Government job" else 0],
     "work_type_Private": [1 if work_type == "Private" else 0],
     "work_type_Self-employed": [1 if work_type == "Self-employed" else 0],
-    "work_type_children": [1 if work_type == "children" else 0],
+    "work_type_children": [1 if work_type == "Children" else 0],
 
     # RESIDENCE
     "Residence_type_Rural": [1 if residence == "Rural" else 0],
