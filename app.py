@@ -25,10 +25,16 @@ with col1:
 with col2:
     avg_glucose_level = st.number_input("Average Glucose Level", min_value=0.0)
     bmi = st.number_input("BMI", min_value=0.0)
-    work_type = st.selectbox("Work Type", ["Private", "Self-employed", "children"])
+
+    work_type = st.selectbox("Work Type",
+        ["Private", "Self-employed", "children", "Govt_job"]
+    )
+
     residence = st.selectbox("Residence Type", ["Urban", "Rural"])
+
     smoking = st.selectbox("Smoking Status",
-                           ["Formerly Smoked", "Never Smoked", "Smokes", "Unknown"])
+        ["Formerly Smoked", "Never Smoked", "Smokes", "Unknown"]
+    )
 
 # Build dataframe sesuai kolom model
 data = {
@@ -36,13 +42,22 @@ data = {
     "age": [age],
     "hypertension": [1 if hypertension == "Yes" else 0],
     "heart_disease": [1 if heart_disease == "Yes" else 0],
+    "ever_married": [1 if ever_married == "Yes" else 0],
     "avg_glucose_level": [avg_glucose_level],
     "bmi": [bmi],
-    "ever_married": [1 if ever_married == "Yes" else 0],
+
+    # WORK TYPE
+    "work_type_Govt_job": [1 if work_type == "Govt_job" else 0],
     "work_type_Private": [1 if work_type == "Private" else 0],
     "work_type_Self-employed": [1 if work_type == "Self-employed" else 0],
     "work_type_children": [1 if work_type == "children" else 0],
+
+    # RESIDENCE
+    "Residence_type_Rural": [1 if residence == "Rural" else 0],
     "Residence_type_Urban": [1 if residence == "Urban" else 0],
+
+    # SMOKING
+    "smoking_status_Unknown": [1 if smoking == "Unknown" else 0],
     "smoking_status_formerly smoked": [1 if smoking == "Formerly Smoked" else 0],
     "smoking_status_never smoked": [1 if smoking == "Never Smoked" else 0],
     "smoking_status_smokes": [1 if smoking == "Smokes" else 0],
