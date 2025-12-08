@@ -9,7 +9,7 @@ scaler = pickle.load(open("scaler.pkl", "rb"))
 
 st.set_page_config(page_title="Stroke Prediction App")
 
-st.title("🧠 Stroke Prediction App")
+st.title("🧠 Brain Stroke Prediction App")
 st.write("Masukkan data berikut untuk memprediksi risiko stroke.")
 
 # --- FORM INPUT ---
