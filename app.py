@@ -7,42 +7,75 @@ model = pickle.load(open("model.pkl", "rb"))
 columns = pickle.load(open("columns.pkl", "rb"))
 scaler = pickle.load(open("scaler.pkl", "rb"))
 
-st.set_page_config(page_title="Stroke Prediction App", page_icon="🧠", layout="wide")
+st.set_page_config(
+    page_title="Stroke Prediction App",
+    page_icon="🧠",
+    layout="centered"
+)
 
-# --- UI STYLE ---
+# -------------------------------
+#           CUSTOM CSS
+# -------------------------------
 st.markdown("""
 <style>
-    .main {
-        background-color: #F7F9FC;
+    body {
+        background-color: #F2F6FC;
     }
-    .title {
-        font-size: 36px !important;
-        font-weight: bold;
+
+    .main {
+        background-color: #F2F6FC;
+    }
+
+    .title-text {
+        font-size: 38px;
+        font-weight: 700;
         color: #2C3E50;
         text-align: center;
+        margin-bottom: -10px;
     }
-    .sub {
-        font-size: 18px !important;
-        color: #34495E;
+
+    .subtitle-text {
+        font-size: 18px;
+        color: #5D6D7E;
         text-align: center;
+        margin-bottom: 25px;
     }
+
+    /* Card Style */
+    .card {
+        padding: 25px;
+        border-radius: 12px;
+        background-color: white;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        margin-bottom: 25px;
+    }
+
+    /* Predict Button */
     .stButton>button {
+        width: 100%;
         background-color: #2E86C1;
         color: white;
-        padding: 0.6rem 2rem;
+        padding: 0.8rem;
         border-radius: 8px;
         font-size: 18px;
+        font-weight: bold;
+        border: none;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# --- TITLE ---
-st.markdown("<p class='title'>🧠 Stroke Prediction App</p>", unsafe_allow_html=True)
-st.markdown("<p class='sub'>Masukkan data berikut untuk memprediksi risiko stroke.</p>",
+# -------------------------------
+#              TITLE
+# -------------------------------
+st.markdown("<p class='title-text'>🧠 Stroke Prediction App</p>", unsafe_allow_html=True)
+st.markdown("<p class='subtitle-text'>Isi data berikut untuk memprediksi risiko stroke.</p>",
             unsafe_allow_html=True)
-st.write("")
 
-# --- FORM INPUT ---
+# -------------------------------
+#     INPUT FORM IN CARD BOX
+# -------------------------------
+st.markdown("<div class='card'>", unsafe_allow_html=True)
+
 col1, col2 = st.columns(2)
 
 with col1:
@@ -57,10 +90,16 @@ with col2:
     bmi = st.number_input("BMI", min_value=0.0)
     work_type = st.selectbox("Work Type", ["Private", "Self-employed", "children"])
     residence = st.selectbox("Residence Type", ["Urban", "Rural"])
-    smoking = st.selectbox("Smoking Status",
-                           ["Formerly Smoked", "Never Smoked", "Smokes", "Unknown"])
+    smoking = st.selectbox(
+        "Smoking Status",
+        ["Formerly Smoked", "Never Smoked", "Smokes", "Unknown"]
+    )
 
-# Build dataframe sesuai kolom model
+st.markdown("</div>", unsafe_allow_html=True)
+
+# -------------------------------
+#     DATAFRAME FIX & SCALING
+# -------------------------------
 data = {
     "gender": [1 if gender == "Male" else 0],
     "age": [age],
@@ -79,26 +118,27 @@ data = {
 }
 
 df = pd.DataFrame(data)
-
-# Reindex kolom agar sesuai model
 df = df.reindex(columns=columns, fill_value=0)
 
-# Apply scaling
+# Scaling hanya 3 kolom numerik
 num_cols = ["age", "avg_glucose_level", "bmi"]
 df[num_cols] = scaler.transform(df[num_cols])
 
-# --- Predict ---
-st.write("")
+# -------------------------------
+#           PREDICT
+# -------------------------------
 if st.button("Predict Risiko Stroke"):
     prediction = model.predict(df)[0]
     prob = model.predict_proba(df)[0][1]
 
-    st.markdown("---")
+    # CARD RESULT
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
 
-    # RESULT BOX
     if prediction == 1:
-        st.error(f"⚠️ **Risiko Stroke: YES**")
+        st.error("⚠️ **Hasil Prediksi: Risiko Stroke Tinggi**")
     else:
-        st.success(f"✓ **Risiko Stroke: NO**")
+        st.success("✅ **Hasil Prediksi: Risiko Stroke Rendah**")
 
     st.write(f"**Probabilitas Stroke:** `{prob:.4f}`")
+
+    st.markdown("</div>", unsafe_allow_html=True)
