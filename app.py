@@ -84,4 +84,5 @@ if st.button("Predict Risiko Stroke"):
     else:
         st.success("✓ Risiko Stroke: NO")
 
-    st.write(f"Probabilitas Stroke: `{prob:.4f}`")
+    st.write(f"Probabilitas Stroke: `{prob*100:.2f}%`")
+
